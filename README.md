@@ -14,17 +14,21 @@
 - Удобная навигация с помощью TabBar
 
 ## Скриншоты
-[Главный экран](screenshots/Screenshot_1747834090.png)
-[Экран статьи](screenshots/Screenshot_1747834098.png)
-[Экран выбора категорий с тёмной темой и на русском языке](screenshots/Screenshot_1747834109.png)
-[Пример: открытие категории бизнес](screenshots/Screenshot_1747834119.png)
+**Главный экран**
+![Главный экран](screenshots/Screenshot_1747834090.png)
+**Экран статьи**
+![Экран статьи](screenshots/Screenshot_1747834098.png)
+**Экран выбора категорий с тёмной темой и на русском языке**
+![Экран выбора категорий с тёмной темой и на русском языке](screenshots/Screenshot_1747834109.png)
+**Пример: открытие категории бизнес**
+![Пример: открытие категории бизнес](screenshots/Screenshot_1747834119.png)
 
 
 ## Установка
 
 1. Склонируйте репозиторий:
    ```sh
-   git clone https://github.com/yourusername/news_app.git
+   git clone https://github.com/Louert/news_app.git
    cd news_app
    ```
 2. Установите зависимости:
@@ -35,7 +39,7 @@
    ```sh
    flutter run
    ```
-4. Для установки APK используйте файл `build/app/outputs/flutter-apk/app-debug.apk`
+4. Для установки APK используйте файл из этой директории `build/app/outputs/flutter-apk/`
 
 ## Требования
 
