@@ -14,10 +14,10 @@
 - Удобная навигация с помощью TabBar
 
 ## Скриншоты
-![Главный экран](screenshots/Screenshot_1747834090.png)
-![Экран статьи](screenshots/Screenshot_1747834098.png)
-![Экран выбора категорий с тёмной темой и на русском языке](screenshots/Screenshot_1747834109.png)
-![Пример: открытие категории бизнес](screenshots/Screenshot_1747834119.png)
+[Главный экран](screenshots/Screenshot_1747834090.png)
+[Экран статьи](screenshots/Screenshot_1747834098.png)
+[Экран выбора категорий с тёмной темой и на русском языке](screenshots/Screenshot_1747834109.png)
+[Пример: открытие категории бизнес](screenshots/Screenshot_1747834119.png)
 
 
 ## Установка
