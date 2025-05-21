@@ -27,7 +27,6 @@ class DetailScreen extends StatelessWidget {
                 article.urlToImage,
                 height: 200,
                 errorBuilder: (context, error, stackTrace) {
-                  print('Image load error: $error');
                   return const Icon(Icons.image_not_supported, size: 100);
                 },
               )

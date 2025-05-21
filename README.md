@@ -1,16 +1,40 @@
-# news_app
+# News App
 
-A new Flutter project.
+**News App** — это современное мобильное приложение на Flutter для чтения новостей из различных категорий.  
+Приложение получает свежие статьи с удалённого API и позволяет удобно просматривать их на мобильном устройстве.
 
-## Getting Started
+## Основные возможности
 
-This project is a starting point for a Flutter application.
+- Просмотр топовых новостей в удобном списке
+- Категории новостей: бизнес, технологии, спорт, здоровье, наука
+- Экран подробностей статьи с фото, описанием и возможностью открыть оригинал в браузере
+- Поддержка светлой и тёмной темы
+- Интернационализация: поддержка английского и русского языков
+- Пагинация (подгрузка новостей при прокрутке)
+- Удобная навигация с помощью TabBar
 
-A few resources to get you started if this is your first Flutter project:
+## Скриншоты
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+_Добавьте сюда скриншоты приложения для демонстрации интерфейса_
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Установка
+
+1. Склонируйте репозиторий:
+   ```sh
+   git clone https://github.com/yourusername/news_app.git
+   cd news_app
+   ```
+2. Установите зависимости:
+   ```sh
+   flutter pub get
+   ```
+3. Запустите на эмуляторе или устройстве:
+   ```sh
+   flutter run
+   ```
+4. Для установки APK используйте файл `build/app/outputs/flutter-apk/app-debug.apk`
+
+## Требования
+
+- Flutter 3.x
+- Android/iOS устройство или эмулятор
