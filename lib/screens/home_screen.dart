@@ -4,7 +4,7 @@ import 'package:news_app/providers/news_provider.dart';
 import 'package:news_app/widgets/article_card.dart';
 import 'package:news_app/screens/detail_screen.dart';
 import 'package:news_app/screens/category_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:news_app/l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   final void Function(ThemeMode mode) onThemeChanged;

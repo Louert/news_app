@@ -1,4 +1,5 @@
 {
+  "@@locale": "en",
   "appTitle": "News App",
   "openInBrowser": "Open in Browser",
   "categories": "Categories",

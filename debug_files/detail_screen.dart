@@ -21,18 +21,14 @@ class DetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (article.urlToImage.isNotEmpty &&
-                Uri.tryParse(article.urlToImage)?.hasAbsolutePath == true)
+            if (article.urlToImage.isNotEmpty)
               Image.network(
                 article.urlToImage,
                 height: 200,
                 errorBuilder: (context, error, stackTrace) {
-                  print('Image load error: $error');
                   return const Icon(Icons.image_not_supported, size: 100);
                 },
-              )
-            else
-              const Icon(Icons.image_not_supported, size: 100),
+              ),
             const SizedBox(height: 12),
             Text(
               article.title,

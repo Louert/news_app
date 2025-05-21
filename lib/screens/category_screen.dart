@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Добавляем импорт
+import 'package:news_app/l10n/app_localizations.dart'; // Добавляем импорт
 import 'package:provider/provider.dart';
 import 'package:news_app/models/article.dart';
 import 'package:news_app/providers/news_provider.dart';
