@@ -1,0 +1,13 @@
+{
+  "appTitle": "News App",
+  "openInBrowser": "Open in Browser",
+  "categories": "Categories",
+  "topNews": "Top News",
+  "switchToDark": "Switch to Dark Theme",
+  "switchToLight": "Switch to Light Theme",
+  "categoryBusiness": "Business",
+  "categoryTechnology": "Technology",
+  "categorySports": "Sports",
+  "categoryHealth": "Health",
+  "categoryScience": "Science"
+}

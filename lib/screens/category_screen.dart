@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Добавляем импорт
 import 'package:provider/provider.dart';
 import 'package:news_app/models/article.dart';
 import 'package:news_app/providers/news_provider.dart';
@@ -20,6 +21,25 @@ class _CategoryScreenState extends State<CategoryScreen> {
   bool _isLoading = false;
   bool _hasMore = true;
   final ScrollController _controller = ScrollController();
+
+  // Метод для получения переведенного названия категории
+  String _getLocalizedCategoryTitle(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    switch (widget.category) {
+      case 'business':
+        return localizations.categoryBusiness;
+      case 'technology':
+        return localizations.categoryTechnology;
+      case 'sports':
+        return localizations.categorySports;
+      case 'health':
+        return localizations.categoryHealth;
+      case 'science':
+        return localizations.categoryScience;
+      default:
+        return widget.category.toUpperCase();
+    }
+  }
 
   @override
   void initState() {
@@ -57,7 +77,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.category.toUpperCase())),
+      appBar: AppBar(
+        title: Text(_getLocalizedCategoryTitle(context)), // Используем локализованный заголовок
+      ),
       body: ListView.builder(
         controller: _controller,
         itemCount: _articles.length + (_hasMore ? 1 : 0),

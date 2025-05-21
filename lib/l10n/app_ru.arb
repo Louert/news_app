@@ -1,0 +1,13 @@
+{
+  "appTitle": "Новости",
+  "openInBrowser": "Открыть в браузере",
+  "categories": "Категории",
+  "topNews": "Главные новости",
+  "switchToDark": "Темная тема",
+  "switchToLight": "Светлая тема",
+  "categoryBusiness": "Бизнес",
+  "categoryTechnology": "Технологии",
+  "categorySports": "Спорт",
+  "categoryHealth": "Здоровье",
+  "categoryScience": "Наука"
+}

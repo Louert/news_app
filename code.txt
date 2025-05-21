@@ -1,0 +1,479 @@
+C:\Users\serge\Desktop\Mage\Flutter\news_app\pubspec.yaml
+
+name: news_app
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+  dio: ^5.3.1
+  provider: ^6.1.1
+  intl: ^0.19.0
+  shared_preferences: ^2.2.2
+  url_launcher: ^6.2.5
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_lints: ^3.0.1
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  # assets:
+  #   - images/a_dot_burr.jpeg
+  #   - images/a_dot_ham.jpeg
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/to/resolution-aware-images
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/to/asset-from-package
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package
+
+
+C:\Users\serge\Desktop\Mage\Flutter\news_app\lib\screens\category_screen.dart
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:news_app/models/article.dart';
+import 'package:news_app/providers/news_provider.dart';
+import 'package:news_app/widgets/article_card.dart';
+import 'package:news_app/screens/detail_screen.dart';
+
+class CategoryScreen extends StatefulWidget {
+  final String category;
+
+  const CategoryScreen({super.key, required this.category});
+
+  @override
+  State<CategoryScreen> createState() => _CategoryScreenState();
+}
+
+class _CategoryScreenState extends State<CategoryScreen> {
+  final List<Article> _articles = [];
+  int _page = 1;
+  bool _isLoading = false;
+  bool _hasMore = true;
+  final ScrollController _controller = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchArticles();
+    _controller.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_controller.position.pixels >= _controller.position.maxScrollExtent - 200 &&
+        !_isLoading &&
+        _hasMore) {
+      _fetchArticles();
+    }
+  }
+
+  Future<void> _fetchArticles() async {
+    setState(() => _isLoading = true);
+    final provider = Provider.of<NewsProvider>(context, listen: false);
+    final fetched = await provider.fetchArticlesByCategory(widget.category, page: _page);
+    setState(() {
+      _articles.addAll(fetched);
+      _isLoading = false;
+      _page++;
+      if (fetched.length < 10) _hasMore = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.category.toUpperCase())),
+      body: ListView.builder(
+        controller: _controller,
+        itemCount: _articles.length + (_hasMore ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index < _articles.length) {
+            return ArticleCard(
+              article: _articles[index],
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => DetailScreen(article: _articles[index]),
+                  ),
+                );
+              },
+            );
+          } else {
+            return const Center(child: Padding(
+              padding: EdgeInsets.all(16),
+              child: CircularProgressIndicator(),
+            ));
+          }
+        },
+      ),
+    );
+  }
+}
+
+C:\Users\serge\Desktop\Mage\Flutter\news_app\lib\screens\detail_screen.dart
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:news_app/models/article.dart';
+
+class DetailScreen extends StatelessWidget {
+  final Article article;
+
+  const DetailScreen({super.key, required this.article});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(article.title, maxLines: 1)),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            if (article.urlToImage.isNotEmpty)
+              Image.network(article.urlToImage, errorBuilder: (context, error, stackTrace) {
+                return const Icon(Icons.image_not_supported, size: 100);
+              },),
+            const SizedBox(height: 12),
+            Text(article.title, style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 8),
+            Text(article.description),
+            const Spacer(),
+            ElevatedButton(
+              onPressed: () => launchUrl(Uri.parse(article.url)),
+              child: const Text('Open in Browser'),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+C:\Users\serge\Desktop\Mage\Flutter\news_app\lib\screens\home_screen.dart
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:news_app/providers/news_provider.dart';
+import 'package:news_app/widgets/article_card.dart';
+import 'package:news_app/screens/detail_screen.dart';
+import 'package:news_app/screens/category_screen.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = Provider.of<NewsProvider>(context);
+    final articles = provider.articles;
+
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('News App'),
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'Top'),
+              Tab(text: 'Categories'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            // Топ новости
+            NotificationListener<ScrollNotification>(
+              onNotification: (scrollInfo) {
+                if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+                  provider.fetchArticles();
+                }
+                return false;
+              },
+              child: ListView.builder(
+                itemCount: articles.length,
+                itemBuilder: (context, index) => ArticleCard(
+                  article: articles[index],
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => DetailScreen(article: articles[index]),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            // Категории
+            ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                for (var category in ['business', 'technology', 'sports', 'health', 'science'])
+                  Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    child: ListTile(
+                      title: Text(
+                        category.toUpperCase(),
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => CategoryScreen(category: category),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+C:\Users\serge\Desktop\Mage\Flutter\news_app\lib\models\article.dart
+class Article {
+  final String title;
+  final String description;
+  final String url;
+  final String urlToImage;
+
+  Article({
+    required this.title,
+    required this.description,
+    required this.url,
+    required this.urlToImage,
+  });
+
+  factory Article.fromJson(Map<String, dynamic> json) => Article(
+    title: json['title'] ?? '',
+    description: json['description'] ?? '',
+    url: json['url'] ?? '',
+    urlToImage: json['urlToImage'] ?? '',
+  );
+}
+
+C:\Users\serge\Desktop\Mage\Flutter\news_app\lib\services\news_service.dart
+import 'package:dio/dio.dart';
+import 'package:news_app/models/article.dart';
+
+class NewsService {
+  final Dio _dio = Dio();
+  final String _baseUrl = 'https://newsapi.org/v2';
+  final String _apiKey = '5213288826764f399289b7805d3e3560'; // замените на ваш API ключ
+
+  Future<List<Article>> fetchArticles({int page = 1, String? category}) async {
+    final response = await _dio.get('$_baseUrl/top-headlines', queryParameters: {
+      'country': 'us',
+      'apiKey': _apiKey,
+      'page': page,
+      'pageSize': 10,
+      if (category != null) 'category': category,
+    });
+
+    return (response.data['articles'] as List)
+        .map((json) => Article.fromJson(json))
+        .toList();
+  }
+}
+
+C:\Users\serge\Desktop\Mage\Flutter\news_app\lib\theme\themes.dart
+import 'package:flutter/material.dart';
+
+final ThemeData lightTheme = ThemeData(
+  brightness: Brightness.light,
+  primarySwatch: Colors.blue,
+);
+
+final ThemeData darkTheme = ThemeData(
+  brightness: Brightness.dark,
+  primarySwatch: Colors.blueGrey,
+);
+
+C:\Users\serge\Desktop\Mage\Flutter\news_app\lib\providers\news_provider.dart
+import 'package:flutter/material.dart';
+import 'package:news_app/models/article.dart';
+import 'package:news_app/services/news_service.dart';
+
+class NewsProvider with ChangeNotifier {
+  final NewsService _service = NewsService();
+  final List<Article> _articles = [];
+  int _page = 1;
+  bool _isLoading = false;
+
+  List<Article> get articles => _articles;
+
+  Future<void> fetchArticles() async {
+    if (_isLoading) return;
+    _isLoading = true;
+
+    final newArticles = await _service.fetchArticles(page: _page);
+    _articles.addAll(newArticles);
+    _page++;
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future<List<Article>> fetchArticlesByCategory(String category, {int page = 1}) async {
+    return await _service.fetchArticles(category: category, page: page);
+  }
+
+  void reset() {
+    _articles.clear();
+    _page = 1;
+    notifyListeners();
+  }
+}
+
+C:\Users\serge\Desktop\Mage\Flutter\news_app\analysis_options.yaml
+# This file configures the analyzer, which statically analyzes Dart code to
+# check for errors, warnings, and lints.
+#
+# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
+# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
+# invoked from the command line by running `flutter analyze`.
+
+# The following line activates a set of recommended lints for Flutter apps,
+# packages, and plugins designed to encourage good coding practices.
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  # The lint rules applied to this project can be customized in the
+  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
+  # included above or to enable additional rules. A list of all available lints
+  # and their documentation is published at https://dart.dev/lints.
+  #
+  # Instead of disabling a lint rule for the entire project in the
+  # section below, it can also be suppressed for a single line of code
+  # or a specific dart file by using the `// ignore: name_of_lint` and
+  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
+  # producing the lint.
+  rules:
+    always_use_package_imports: true
+    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
+    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options
+
+C:\Users\serge\Desktop\Mage\Flutter\news_app\lib\l10n\l10n.dart
+import 'package:flutter/material.dart';
+
+class L10n {
+  static final all = [
+    const Locale('en'),
+    const Locale('ru'),
+  ];
+}
+
+C:\Users\serge\Desktop\Mage\Flutter\news_app\lib\l10n\intl_en.arb
+Пусто
+
+C:\Users\serge\Desktop\Mage\Flutter\news_app\lib\l10n\intl_ru.arb
+Пусто
+
+C:\Users\serge\Desktop\Mage\Flutter\news_app\test\widget_test.dart
+// This is a basic Flutter widget test.
+//
+// To perform an interaction with a widget in your test, use the WidgetTester
+// utility in the flutter_test package. For example, you can send tap and scroll
+// gestures. You can also use WidgetTester to find child widgets in the widget
+// tree, read text, and verify that the values of widget properties are correct.
+
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:news_app/app.dart';
+
+void main() {
+  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const NewsApp());
+
+    // Verify that our counter starts at 0.
+    expect(find.text('0'), findsOneWidget);
+    expect(find.text('1'), findsNothing);
+
+    // Tap the '+' icon and trigger a frame.
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+
+    // Verify that our counter has incremented.
+    expect(find.text('0'), findsNothing);
+    expect(find.text('1'), findsOneWidget);
+  });
+}
