@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
     };
 
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: Text(localizations.appTitle),
@@ -68,6 +68,7 @@ class HomeScreen extends StatelessWidget {
             tabs: [
               Tab(text: localizations.topNews),
               Tab(text: localizations.categories),
+              const Tab(icon: Icon(Icons.favorite)),
             ],
           ),
         ),
@@ -95,6 +96,9 @@ class HomeScreen extends StatelessWidget {
                       ),
                     );
                   },
+                  onFavoritePressed: () {
+                    provider.toggleFavorite(articles[index]);
+                  },
                 ),
               ),
             ),
@@ -120,6 +124,32 @@ class HomeScreen extends StatelessWidget {
                   ),
                 );
               }).toList(),
+            ),
+            // Favorites
+            Consumer<NewsProvider>(
+              builder: (context, provider, _) {
+                final favorites = provider.favoriteArticles;
+                if (favorites.isEmpty) {
+                  return Center(child: Text(localizations.noFavorites));
+                }
+                return ListView.builder(
+                  itemCount: favorites.length,
+                  itemBuilder: (context, index) => ArticleCard(
+                    article: favorites[index],
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => DetailScreen(article: favorites[index]),
+                        ),
+                      );
+                    },
+                    onFavoritePressed: () {
+                      provider.toggleFavorite(favorites[index]);
+                    },
+                  ),
+                );
+              },
             ),
           ],
         ),

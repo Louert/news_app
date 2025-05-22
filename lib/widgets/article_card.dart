@@ -4,11 +4,13 @@ import 'package:news_app/models/article.dart';
 class ArticleCard extends StatelessWidget {
   final Article article;
   final VoidCallback onTap;
+  final VoidCallback onFavoritePressed;
 
   const ArticleCard({
     super.key,
     required this.article,
     required this.onTap,
+    required this.onFavoritePressed,
   });
 
   @override
@@ -20,6 +22,13 @@ class ArticleCard extends StatelessWidget {
         leading: _buildImageWidget(),
         title: Text(article.title),
         subtitle: Text(article.description),
+        trailing: IconButton(
+          icon: Icon(
+            article.isFavorite ? Icons.favorite : Icons.favorite_border,
+            color: article.isFavorite ? Colors.red : null,
+          ),
+          onPressed: onFavoritePressed,
+        ),
         onTap: onTap,
       ),
     );

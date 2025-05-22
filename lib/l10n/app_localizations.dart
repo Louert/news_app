@@ -163,6 +163,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Science'**
   String get categoryScience;
+
+  /// No description provided for @noFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'No favorite articles yet.'**
+  String get noFavorites;
 }
 
 class _AppLocalizationsDelegate

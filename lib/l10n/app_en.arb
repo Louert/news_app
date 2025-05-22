@@ -1,14 +1,27 @@
 {
   "@@locale": "en",
   "appTitle": "News App",
+  "@appTitle": {},
   "openInBrowser": "Open in Browser",
+  "@openInBrowser": {},
   "categories": "Categories",
+  "@categories": {},
   "topNews": "Top News",
+  "@topNews": {},
   "switchToDark": "Switch to Dark Theme",
+  "@switchToDark": {},
   "switchToLight": "Switch to Light Theme",
+  "@switchToLight": {},
   "categoryBusiness": "Business",
+  "@categoryBusiness": {},
   "categoryTechnology": "Technology",
+  "@categoryTechnology": {},
   "categorySports": "Sports",
+  "@categorySports": {},
   "categoryHealth": "Health",
-  "categoryScience": "Science"
+  "@categoryHealth": {},
+  "categoryScience": "Science",
+  "@categoryScience": {},
+  "noFavorites": "No favorite articles yet.",
+  "@noFavorites": {}
 }

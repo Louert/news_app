@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/l10n/app_localizations.dart'; // Добавляем импорт
 import 'package:provider/provider.dart';
-import 'package:news_app/models/article.dart';
 import 'package:news_app/providers/news_provider.dart';
 import 'package:news_app/widgets/article_card.dart';
 import 'package:news_app/screens/detail_screen.dart';
@@ -16,7 +15,6 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  final List<Article> _articles = [];
   int _page = 1;
   bool _isLoading = false;
   bool _hasMore = true;
@@ -59,12 +57,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Future<void> _fetchArticles() async {
     setState(() => _isLoading = true);
     final provider = Provider.of<NewsProvider>(context, listen: false);
-    final fetched = await provider.fetchArticlesByCategory(widget.category, page: _page);
+    await provider.fetchArticlesByCategory(widget.category, page: _page);
     setState(() {
-      _articles.addAll(fetched);
       _isLoading = false;
       _page++;
-      if (fetched.length < 10) _hasMore = false;
+      final articles = provider.getArticlesByCategory(widget.category);
+      if (articles.length < 10) _hasMore = false;
     });
   }
 
@@ -76,24 +74,29 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<NewsProvider>(context);
+    final articles = provider.getArticlesByCategory(widget.category);
     return Scaffold(
       appBar: AppBar(
-        title: Text(_getLocalizedCategoryTitle(context)), // Используем локализованный заголовок
+        title: Text(_getLocalizedCategoryTitle(context)),
       ),
       body: ListView.builder(
         controller: _controller,
-        itemCount: _articles.length + (_hasMore ? 1 : 0),
+        itemCount: articles.length + (_hasMore ? 1 : 0),
         itemBuilder: (context, index) {
-          if (index < _articles.length) {
+          if (index < articles.length) {
             return ArticleCard(
-              article: _articles[index],
+              article: articles[index],
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => DetailScreen(article: _articles[index]),
+                    builder: (_) => DetailScreen(article: articles[index]),
                   ),
                 );
+              },
+              onFavoritePressed: () {
+                provider.toggleFavorite(articles[index]);
               },
             );
           } else {

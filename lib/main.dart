@@ -3,9 +3,19 @@ import 'package:news_app/app.dart';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:news_app/models/article.dart';
+import 'package:get_it/get_it.dart';
+import 'package:news_app/services/news_service.dart';
+import 'package:news_app/providers/news_provider.dart';
+
+void setupDI() {
+  final getIt = GetIt.instance;
+  getIt.registerLazySingleton<NewsService>(() => NewsService());
+  getIt.registerFactory<NewsProvider>(() => NewsProvider(getIt<NewsService>()));
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  setupDI();
   runApp(const NewsApp());
 }
 

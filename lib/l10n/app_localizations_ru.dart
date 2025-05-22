@@ -40,4 +40,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get categoryScience => 'Наука';
+
+  @override
+  String get noFavorites => 'Нет избранных статей.';
 }
